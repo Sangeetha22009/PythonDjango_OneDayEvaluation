@@ -4,8 +4,8 @@ import os
 
 def getfilename(request, filename):
     date_time_now = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
-    filename = os.path.join(date_time_now,filename)
-    return os.path.join('uploads/', filename)
+    filename = f'{date_time_now}_{ filename }'
+    return os.path.join('uploads/images', filename)
 
 # Create your models here.
 class Gallery(models.Model):
