@@ -79,7 +79,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'ImageHub',
         'USER': 'postgres',
-        'PASSWORD': 'admin',
+        'PASSWORD': 'sanram',
         'HOST': '127.0.0.1',
         'PORT': '5432'
     }
@@ -127,5 +127,9 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-MEDIA_URL = 'media/'
-MEDIA_ROOT = BASE_DIR / MEDIA_URL
+MEDIA_URL = '/images/'
+MEDIA_ROOT = BASE_DIR / 'static'
+
+STATICFILES_DIRS =[
+    BASE_DIR / 'static'
+]
