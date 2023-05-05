@@ -1,0 +1,20 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@500&display=swap');
+
+.carosuel-item img {
+    object-fit: cover;
+    object-position: top;
+    height: 60vh;
+    overflow: hidden;
+}
+
+html {
+    font-size: 14px;
+}
+
+body {
+    font-family: 'Nato Sans', sans-serif; 
+}
+
+a {
+    text-decoration: none;
+}

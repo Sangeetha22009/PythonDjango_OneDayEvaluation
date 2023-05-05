@@ -2,9 +2,12 @@
 {% block title  %}    
 <title>Home</title>
 {% endblock title  %}
-{% block content  %}
 
-{% include "ImagesApp/include/slider.html" %}
+
+
+{% comment %} {% include "ImagesApp/include/slider.html" %} {% endcomment %}
+{% block content  %}
+{% include 'ImagesApp/include/slider.html' %}
 <div class="container" style="margin-top:70px;">
     <div class="row">
         <div class="col-12">
