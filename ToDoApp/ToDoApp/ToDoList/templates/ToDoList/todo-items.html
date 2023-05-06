@@ -22,26 +22,25 @@
                         <div class="col-12">
                             <form action="" method="post">
                                 {% csrf_token %}
-                                <input type="hidden" id="list_id" name="todolist_id" value="{{todolist_id}}">
+                                <input type="hidden" id="todolist_id" name="todolist_id" value="{{todolist_id}}">
                                 <div class="mb-4">
                                     <label for="" class="form-label">Title</label>
-                                    <input type="text" name="title" id="title" placeholder="Enter title for List"
+                                    <input type="text" name="title" id="title" required placeholder="Enter title for List"
                                         class="form-control">
                                 </div>
                                 <div class="mb-4">
                                     <label for="" class="form-label">Description</label>
-                                    <textarea name="description" id="description" placeholder="Enter Description"
-                                        class="form-control" style="resize:none;">    </textarea>
+                                    <textarea name="description" id="description" required placeholder="Enter Description"
+                                        class="form-control" style="resize:none;"></textarea>
                                 </div>
                                 <div class="mb-4">
                                     <label for="" class="form-label">Due Date</label>
-                                    <input type="date" name="duedate" id="duedate" placeholder="Enter Due Date"
+                                    <input type="date" name="due_date" id="due_date" required placeholder="Enter Due Date"
                                         class="form-control">
                                 </div>
-                                <div class="mb-4">
-                                    <label for="" class="form-label">Description</label>
-                                    <input type="text" name="description" id="description"
-                                        placeholder="Enter Description" class="form-control">
+                                <div class="custom-control custom-checkbox mb-4">
+                                    <input type="checkbox" class="custom-control-input" id="is_completed" name="is_completed">
+                                    <label class="custom-control-label" for="is_completed">Completed</label>
                                 </div>
                                 <button type="submit" class="btn btn-primary">Add Item</button>
                             </form>
@@ -62,17 +61,29 @@
                             <th scope="col">Due Date</th>
                             <th scope="col">Created At</th>
                             <th scope="col">ToDo List</th>
+                            <th scope="col">Completed</th>
                           </tr>
                         </thead>
                         <tbody>
+                            {% if items %}
+                            {% for item in items %} 
                           <tr>
-                            <th scope="row">1</th>
-                       <td><a href="{% url 'todolist'  %}">Mark</a></td>
-                            <td>Otto DescriptionDescriptionDescriptionDescriptionDescriptionDescriptionDescription</td>
-                            <td>@mdo</td>
-                            <td>@mdo</td>
-                            <td>List</td>
+                            <th scope="row">{{forloop.counter}}</th>
+                            <td><a href="{% url 'todo-list'  %}">{{item.title}}</a></td>
+                            <td>{{item.description}}</td>
+                            <td>{{item.due_date}}</td>
+                            <td>{{item.created_at}}</td>
+                            <td>{{item.todo_list}}</td>
+                            {% if item.is_completed == True %}
+                            <td class="field-is_staff"><img src="/static/admin/img/icon-yes.svg" alt="item.is_completed "></td>
+                            {% else %}
+                            <td class="field-is_staff"><img src="/static/admin/img/icon-no.svg" alt="item.is_completed "></td>
+                            {% endif %}                          
                           </tr>
+                          {% endfor %}
+                          {% else %}
+                          <tr> No items found </tr>
+                          {% endif %}
                         </tbody>
                       </table>
                 </div>
