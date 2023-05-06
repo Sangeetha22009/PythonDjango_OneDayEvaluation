@@ -1,0 +1,31 @@
+{% extends 'ImagesApp/layouts/main.html' %}
+
+{% block content %}
+<div class="container" style="padding-top: 5%;">
+    <div class="row">
+      <div class="col-md-12">
+        <h1 class="text-center">Image Details</h1>
+      </div>
+    </div>
+<div class="row">
+    {% if image%}
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+      <div class="card">
+        <img src="{{ image.image.url }}" alt="{{ image.title }}">
+        <div class="card-body" >
+          <h5 class="card-title">{{ image.title }}</h5>
+          <p class="card-text">{{ image.description }}</p>
+          <p class="text-muted"><b> Category: </b> {{ image.category }}</p>
+          <p class="text-muted"><b> Uploaded By: </b> {{ image.uploaded_by }}</p>
+          <p class="text-muted"><b> Uploaded At:</b> {{ image.uploaded_at }}</p>
+        </div>
+      </div>
+    </div>
+    {% else %}
+    <div class="card-title" > No records found  </div>
+    {% endif %}
+  </div>
+</div>
+
+{% endblock %}

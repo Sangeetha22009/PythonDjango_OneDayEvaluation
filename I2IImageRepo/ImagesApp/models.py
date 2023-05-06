@@ -13,6 +13,8 @@ class Gallery(models.Model):
     image = models.ImageField(upload_to=getfilename,blank=False, null=False)
     description = models.CharField(max_length=200,blank=False, null=False)
     category = models.CharField(max_length=50, blank=False, null=False)
+    uploaded_by = models.CharField(max_length=50, default='admin') 
+    uploaded_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self) -> str:
         return {self.title, self.image}
