@@ -9,7 +9,7 @@ def todo_item(request, todolist_id):
 
 def user_login(request):
     if request.user.is_authenticated:
-        return redirect('/todolist')
+        return redirect('/todo-list')
     else:
         if request.method == 'POST':
             name = request.POST.get('username')
@@ -17,7 +17,7 @@ def user_login(request):
             user = authenticate(request, username=name, password=password)
             if user is not None:
                 login(request, user)                
-                return render(request, 'ToDoList/todolist.html')
+                return render(request, 'ToDoList/todo-list.html')
             else:
                 messages.error(request, "Inavlid User Name or Password")
         return render(request, "ToDoList/login.html")
@@ -38,6 +38,6 @@ def register(request):
     return render(request, "ToDoList/register.html", {'registraion_form': registraion_form})
 
 
-def todolist(request):
-    return render(request, "ToDoList/todolist.html")
+def todo_list(request):
+    return render(request, "ToDoList/todo-list.html")
 
