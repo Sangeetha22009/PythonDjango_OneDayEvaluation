@@ -43,28 +43,34 @@ def register(request):
 
 
 def image_details(request, image_id):
-    print('image-details')
-    image = Gallery.objects.get(id=image_id)
-    return render(request, 'ImagesApp/image-details.html' , {'image': image}) 
+    if request.user.is_authenticated:
+        image = Gallery.objects.get(id=image_id)
+        return render(request, 'ImagesApp/image-details.html' , {'image': image}) 
+    else:
+        return redirect('login')
 
 def gallery(request):
-    searchText = '' 
-    if request.GET.get('search_text') is not None:
-        searchText = request.GET.get('search_text')   
-    images = Gallery.objects.all().order_by('-id') \
-            .filter(Q(title__icontains = searchText) | Q(description__icontains = searchText) | Q(category__icontains = searchText))
-    paginator  = Paginator(images, 4)
-    current_page = request.GET.get('page')
-    paginated_images = paginator.get_page(current_page)
-    count = images.count
-    context = {
-        'images' : paginated_images,
-        'count': count
-    }
-    return render(request, 'ImagesApp/gallery.html', context)
+    if request.user.is_authenticated:
+        searchText = '' 
+        if request.GET.get('search_text') is not None:
+            searchText = request.GET.get('search_text')   
+        images = Gallery.objects.all().order_by('-id') \
+                .filter(Q(title__icontains = searchText) | Q(description__icontains = searchText) | Q(category__icontains = searchText))
+        paginator  = Paginator(images, 4)
+        current_page = request.GET.get('page')
+        paginated_images = paginator.get_page(current_page)
+        count = images.count
+        context = {
+            'images' : paginated_images,
+            'count': count
+        }
+        return render(request, 'ImagesApp/gallery.html', context)
+    else:
+        return redirect('login')
 
 # image-upload
 def image_upload(request):
+  if request.user.is_authenticated:
     if request.method == 'POST':
         form = ImageUploadForm(request.POST, request.FILES)
         # breakpoint()
@@ -91,3 +97,5 @@ def image_upload(request):
             'form': form
         }
         return render(request, 'ImagesApp/image-upload.html', context)
+  else:
+      return redirect('login')
