@@ -4,6 +4,7 @@ from django.contrib.auth import authenticate, login, logout
 from .forms import UserRegistrationForm, ToDoListForm, ToDoItemForm
 from .models import ToDoList, ToDoItem
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
 
 # Create your views here.
 @login_required(login_url='login')
@@ -12,7 +13,6 @@ def todo_item(request, todolist_id):
         form = ToDoItemForm(request.POST)
         # breakpoint()
         if form.is_valid():
-            print('form valid')
             title = form.cleaned_data['title']
             description = form.cleaned_data['description']
             todolist = ToDoList.objects.get_or_create(id=todolist_id)
@@ -32,11 +32,14 @@ def todo_item(request, todolist_id):
             messages.error(request, 'Invalid form, please check and update')
         return render(request, "ToDoList/todo-items.html")
     else:
-        items = ToDoItem.objects.all()
+        items = ToDoItem.objects.all().order_by('-id')
+        paginator = Paginator(items, 5)
+        current_page = request.GET.get('page')
+        paged_items = paginator.get_page(current_page)
         form = ToDoItemForm()
         context = {
             'form': form,
-            'items': items,
+            'items': paged_items,
             'todolist_id': todolist_id
         } 
         return render(request, "ToDoList/todo-items.html", context)
