@@ -1,8 +1,9 @@
 from django.db import models
+from django.contrib.auth.models import User
 import datetime
 import os
 
-def getfilename(request, filename):
+def getfilename(request, filename): 
     date_time_now = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
     filename = f'{date_time_now}_{ filename }'
     return os.path.join('uploads/images', filename)

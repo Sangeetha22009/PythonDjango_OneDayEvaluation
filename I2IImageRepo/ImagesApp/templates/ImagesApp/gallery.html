@@ -50,7 +50,7 @@
       <div class="col-md-4" style="margin-bottom: 10px">
         <div class="card">
           <a href="{% url 'image-details' image.id %}">
-          <img src="{{ image.image.url }}" alt="{{ image.title }}">
+          <img src="{{ image.image.url }}" alt="{{ image.title }}" style="max-width: 100%;">
         </a>
           <div class="card-body" >
             <h5 class="card-title">{{ image.title }}</h5>
