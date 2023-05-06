@@ -2,6 +2,7 @@ from django.shortcuts import render,redirect
 from django.http import HttpResponse
 from .forms import ImageUploadForm
 from .models import Gallery
+from django.db.models import Q
 
 # Create your views here.
 def index(request):
@@ -11,7 +12,12 @@ def register(request):
     return render(request, "ImagesApp/register.html" )
 
 def gallery(request):
-    images = Gallery.objects.all()
+    searchText = '' 
+    if request.GET.get('search_text') is not None:
+        searchText = request.GET.get('search_text')   
+    images = Gallery.objects.all().order_by('-id') \
+            .filter(Q(title__icontains = searchText) | Q(description__icontains = searchText) | Q(category__icontains = searchText))
+    
     context = {
         'images' : images
     }
