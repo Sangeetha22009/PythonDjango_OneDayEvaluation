@@ -36,9 +36,11 @@
                             <label for="" class="form-label">Confirm Password</label>
                             {{registraion_form.password2}}
                         </div>
+                        <div style="display: inline-flex;width:150%">
                         <button type="submit" class="btn btn-primary">Register</button>
-                    </form>
-                    <p class="my-2">Registered User? <a href="{% url 'login' %}">Login Now</a></p>
+                        <p class="my-2 px-3">Registered User? <a href="{% url 'login' %}">Login Now</a></p>
+                    </div>
+                    </form>                    
                 </div>
                 <div class="col-6">
                     {% if registraion_form.errors.username %}
