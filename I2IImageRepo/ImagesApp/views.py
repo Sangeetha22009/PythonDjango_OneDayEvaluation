@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from .forms import ImageUploadForm, UserRegistrationForm
 from .models import Gallery
 from django.db.models import Q
+from django.core.paginator import Paginator
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 # Create your views here.
@@ -40,20 +41,36 @@ def register(request):
             return redirect('/login')
     return render(request, "ImagesApp/register.html", {'registraion_form': registraion_form})
 
+
+def image_details(request, image_id):
+    if request.user.is_authenticated:
+        image = Gallery.objects.get(id=image_id)
+        return render(request, 'ImagesApp/image-details.html' , {'image': image}) 
+    else:
+        return redirect('login')
+
 def gallery(request):
-    searchText = '' 
-    if request.GET.get('search_text') is not None:
-        searchText = request.GET.get('search_text')   
-    images = Gallery.objects.all().order_by('-id') \
-            .filter(Q(title__icontains = searchText) | Q(description__icontains = searchText) | Q(category__icontains = searchText))
-    
-    context = {
-        'images': images
-    }
-    return render(request, 'ImagesApp/gallery.html', context)
+    if request.user.is_authenticated:
+        searchText = '' 
+        if request.GET.get('search_text') is not None:
+            searchText = request.GET.get('search_text')   
+        images = Gallery.objects.all().order_by('-id') \
+                .filter(Q(title__icontains = searchText) | Q(description__icontains = searchText) | Q(category__icontains = searchText))
+        paginator  = Paginator(images, 4)
+        current_page = request.GET.get('page')
+        paginated_images = paginator.get_page(current_page)
+        count = images.count
+        context = {
+            'images' : paginated_images,
+            'count': count
+        }
+        return render(request, 'ImagesApp/gallery.html', context)
+    else:
+        return redirect('login')
 
 # image-upload
 def image_upload(request):
+  if request.user.is_authenticated:
     if request.method == 'POST':
         form = ImageUploadForm(request.POST, request.FILES)
         # breakpoint()
@@ -65,19 +82,22 @@ def image_upload(request):
 
             # save image to server
             image_obj = Gallery(
-                title=title, description=description, image=image, category=category,)
+                title=title, description=description, image=image, category=category, uploaded_by = request.user.username )
             image_obj.save()
+            messages.success(request, 'Image Uploaded Successfully !!')
             return redirect('gallery')
             # redirect to success html or gallery page
             return HttpResponse('Saved successfully')
         else:
-            raise Exception('Error occured ', form.errors)
+            #raise Exception('Error occured ', form.errors)
+            messages.error(request, 'Error occured while uploading image, please try again')
             # need to add messages to display errors
             return render(request, 'ImagesApp/image-upload.html')
     else:
         form = ImageUploadForm()
         context = {
-            'form', form
+            'form': form
         }
-        return render(request, 'ImagesApp/image-upload.html')
-        return render(request, 'ImagesApp/image-upload.html')
+        return render(request, 'ImagesApp/image-upload.html', context)
+  else:
+      return redirect('login')
