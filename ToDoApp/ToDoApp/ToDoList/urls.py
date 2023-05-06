@@ -5,5 +5,6 @@ urlpatterns = [
     path("", views.index, name = "index" ),
     path("register", views.register, name = "register" ),
     path("login", views.user_login, name = "login" ),
-    path("logout", views.user_logout, name = "logout" )
+    path("logout", views.user_logout, name = "logout" ),
+    path("todo-item/<int:todolist_id>/", views.todo_item, name='todo-item')
 ]
