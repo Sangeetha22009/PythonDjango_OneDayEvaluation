@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
-from .forms import UserRegistrationForm
+from .forms import UserRegistrationForm, ToDoListForm
+from .models import ToDoList
 # Create your views here.
 
 def todo_item(request, todolist_id):
@@ -39,5 +40,17 @@ def register(request):
 
 
 def todo_list(request):
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            form = ToDoListForm(request.POST)
+            if form.is_valid():
+                title = form.cleaned_data['title']
+                description = form.cleaned_data['description']
+
+                list_obj = ToDoList(
+                    title=title, description=description, uploaded_by = request.user.username )
+                list_obj.save()
+                messages.success(request, 'List Created Successfully !!')
+                return redirect('/')
     return render(request, "ToDoList/todo-list.html")
 
