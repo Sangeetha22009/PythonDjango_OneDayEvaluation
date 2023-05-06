@@ -48,8 +48,8 @@
       {% if images%}
         <div class="card-title"> Total:  <b> {{ count }} </b> records found  </div>
       {% for image in images %}
-      <div class="col-md-4" style="margin-bottom: 10px">
-        <div class="card">
+      <div class="col-md-4" style="margin-bottom: 10px; ">
+        <div class="card" style="max-height:100%">
           <a href="{% url 'image-details' image.id %}">
           <img src="{{ image.image.url }}" alt="{{ image.title }}" style="max-width: 100%;">
         </a>
@@ -67,7 +67,7 @@
     </div>
   
     
-    <nav class="mt-4" aria-label="Page navigation sample">
+    <nav class="mt-4" aria-label="Page navigation sample" style="margin-bottom: 10%" >
       {% if images.has_other_pages %}
     <ul class="pagination">
       {% if images.has_previous %}
@@ -77,7 +77,7 @@
       {% endif %}
       {% for i in images.paginator.page_range %}
           {% if images.number == i %}
-              <li class="page-item"><a class="page-link" href="#">{{i}}</a></li>
+              <li class="page-item"><a class="page-link"  href="#">{{i}}</a></li>
           {% else %}
               <li class="page-item"><a class="page-link" href="?page={{i}}">{{i}}</a></li>
           {% endif %}
