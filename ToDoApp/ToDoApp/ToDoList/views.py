@@ -7,6 +7,9 @@ from .forms import UserRegistrationForm
 # def index(request):
 #     return render(request, "ToDoList/index.html")
 
+def todo_item(request, todolist_id):
+    return render(request, "ToDoList/todo-item.html")
+
 def user_login(request):
     if request.user.is_authenticated:
         return redirect('/todolist')
