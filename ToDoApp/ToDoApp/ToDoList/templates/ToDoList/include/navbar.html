@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
   <div class="container">
-    <a class="navbar-brand" href="{% url 'index' %}">ToDO App</a>
+    <a class="navbar-brand" href="{% url 'login' %}">ToDO App</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
       aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -10,7 +10,7 @@
         {% if request.user.is_authenticated%}        
         <label for="" class="nav-link">Welcome, {{request.user}}</label>
         {% endif %}
-        <a class="nav-link" aria-current="page" href="{% url 'index' %}"><i class="fa fa-home"></i> Home</a>
+        {% comment %} <a class="nav-link" aria-current="page" href="{% url 'index' %}"><i class="fa fa-home"></i> Home</a> {% endcomment %}
         {% if request.user.is_authenticated%}
         <a class="nav-link" aria-current="page" href="{% url 'logout' %}"><i class="fa fa-sign-out"></i> Logout</a>
         {% else %}

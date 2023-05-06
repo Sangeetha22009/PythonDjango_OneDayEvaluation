@@ -4,12 +4,12 @@ from django.contrib.auth import authenticate, login, logout
 from .forms import UserRegistrationForm
 # Create your views here.
 
-def index(request):
-    return render(request, "ToDoList/index.html")
+# def index(request):
+#     return render(request, "ToDoList/index.html")
 
 def user_login(request):
     if request.user.is_authenticated:
-        return redirect('/')
+        return redirect('/todolist')
     else:
         if request.method == 'POST':
             name = request.POST.get('username')
@@ -17,7 +17,7 @@ def user_login(request):
             user = authenticate(request, username=name, password=password)
             if user is not None:
                 login(request, user)                
-                return redirect('/')
+                return render(request, 'ToDoList/todolist.html')
             else:
                 messages.error(request, "Inavlid User Name or Password")
         return render(request, "ToDoList/login.html")
@@ -36,3 +36,8 @@ def register(request):
             messages.success(request, 'Registered Successfuly, Please Login..')
             return redirect('/login')
     return render(request, "ToDoList/register.html", {'registraion_form': registraion_form})
+
+
+def todolist(request):
+    return render(request, "ToDoList/todolist.html")
+
