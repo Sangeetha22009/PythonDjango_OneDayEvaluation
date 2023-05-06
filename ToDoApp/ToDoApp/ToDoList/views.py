@@ -4,16 +4,14 @@ from django.contrib.auth import authenticate, login, logout
 from .forms import UserRegistrationForm, ToDoListForm, ToDoItemForm
 from .models import ToDoList, ToDoItem
 from django.contrib.auth.decorators import login_required
-from django.core.paginator import Paginator
-
 from django.db.models import Q
 from django.core.paginator import Paginator
+
 # Create your views here.
 @login_required(login_url='login')
 def todo_item(request, todolist_id):
     if request.method == 'POST':
         form = ToDoItemForm(request.POST)
-        # breakpoint()
         if form.is_valid():
             title = form.cleaned_data['title']
             description = form.cleaned_data['description']
@@ -23,10 +21,7 @@ def todo_item(request, todolist_id):
             item = ToDoItem( todo_list = todolist, title = title, description=description, due_date= due_date,  is_completed = is_completed)
             item.save()
             messages.success(request, 'Item added succesfully !')
-            print(item)
-            print(todolist_id)
             items = ToDoItem.objects.all().order_by('-id').filter(todo_list__id = todolist_id)
-            print(items)
             context = {
                 'items' : items,
                 'todolist_id': todolist_id
@@ -36,7 +31,6 @@ def todo_item(request, todolist_id):
             messages.error(request, 'Invalid form, please check and update')
         return render(request, "ToDoList/todo-items.html")
     else:
-        print(todolist_id)
         items = ToDoItem.objects.all().order_by('-id').filter(todo_list__id = todolist_id)
         # paginator = Paginator(items, 5)
         # current_page = request.GET.get('page')
@@ -51,7 +45,7 @@ def todo_item(request, todolist_id):
 
 def user_login(request):
     if request.user.is_authenticated:
-        return redirect('/todo-list')
+        return redirect('todo-list')
     else:
         if request.method == 'POST':
             name = request.POST.get('username')
@@ -59,7 +53,7 @@ def user_login(request):
             user = authenticate(request, username=name, password=password)
             if user is not None:
                 login(request, user)                
-                return render(request, 'ToDoList/todo-list.html')
+                return redirect('todo-list')
             else:
                 messages.error(request, "Inavlid User Name or Password")
         return render(request, "ToDoList/login.html")
