@@ -84,11 +84,13 @@ def image_upload(request):
             image_obj = Gallery(
                 title=title, description=description, image=image, category=category, uploaded_by = request.user.username )
             image_obj.save()
+            messages.success(request, 'Image Uploaded Successfully !!')
             return redirect('gallery')
             # redirect to success html or gallery page
             return HttpResponse('Saved successfully')
         else:
-            raise Exception('Error occured ', form.errors)
+            #raise Exception('Error occured ', form.errors)
+            messages.error(request, 'Error occured while uploading image, please try again')
             # need to add messages to display errors
             return render(request, 'ImagesApp/image-upload.html')
     else:
