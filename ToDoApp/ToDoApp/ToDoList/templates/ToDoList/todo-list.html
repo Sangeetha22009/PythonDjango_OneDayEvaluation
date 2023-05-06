@@ -24,12 +24,12 @@
                         {% csrf_token %}
                         <div class="mb-4">
                             <label for="" class="form-label">Title</label>
-                               <input type="text" name="username" id="username" required max-length="100" placeholder="Enter title for List" class="form-control">                     
+                               <input type="text" name="title" id="title" required max-length="100" placeholder="Enter title for List" class="form-control">                     
                         </div>
                         <div class="mb-4">
                             <label for="" class="form-label">Description</label>
                             <textarea name="description" id="description" required max-length="200" placeholder="Enter Description"
-                            class="form-control" style="resize:none;">    </textarea>
+                            class="form-control" style="resize:none;"></textarea>
                         </div>
                         <button type="submit" class="btn btn-primary">Create List</button>
                     </form>                    
@@ -51,12 +51,18 @@
                   </tr>
                 </thead>
                 <tbody>
+                {% if listobj %}
+                {% for obj in listobj %}
                   <tr>
-                    <th scope="row">1</th>
-                    <td><a href="{% url 'todo-item' 1 %}">Mark</a></td>
-                    <td>Otto DescriptionDescriptionDescriptionDescription Description Description</td>
-                    <td>@mdo</td>
+                    <th scope="row">{{forloop.counter}}</th>
+                    <td><a href="{% url 'todo-item' obj.id %}">{{obj.title}}</a></td>
+                    <td>{{obj.description}}</td>
+                    <td>{{ obj.created_at}}</td>
                   </tr>
+                  {% endfor %}
+                  {% else %}
+                  <tr> <td colspan="4" class="text-center"> No items found </td></tr>
+                  {% endif %}
                 </tbody>
               </table>
         </div>
