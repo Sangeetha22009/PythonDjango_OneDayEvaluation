@@ -38,6 +38,6 @@ def register(request):
     return render(request, "ToDoList/register.html", {'registraion_form': registraion_form})
 
 
-def todo_list(request):
-    return render(request, "ToDoList/todo-list.html")
+def todolist(request):
+    return render(request, "ToDoList/todolist.html")
 
