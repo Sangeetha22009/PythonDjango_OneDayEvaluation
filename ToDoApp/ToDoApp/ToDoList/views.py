@@ -4,11 +4,8 @@ from django.contrib.auth import authenticate, login, logout
 from .forms import UserRegistrationForm
 # Create your views here.
 
-# def index(request):
-#     return render(request, "ToDoList/index.html")
-
 def todo_item(request, todolist_id):
-    return render(request, "ToDoList/todo-item.html")
+    return render(request, "ToDoList/todo-items.html")
 
 def user_login(request):
     if request.user.is_authenticated:
