@@ -22,7 +22,9 @@ a {
 .footer {
     position: fixed;
     bottom: 0;
-    width: 100%;
+    width: 100% !important;
     height: 30px; /* Adjust height as needed */
     background-color: #f8f9fa; /* Example background color */
+    margin-top: 10px;
+    
   }
