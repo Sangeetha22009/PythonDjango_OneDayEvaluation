@@ -48,8 +48,8 @@
       {% if images%}
         <div class="card-title"> Total:  <b> {{ count }} </b> records found  </div>
       {% for image in images %}
-      <div class="col-md-4" style="margin-bottom: 10px">
-        <div class="card">
+      <div class="col-md-4" style="margin-bottom: 10px; ">
+        <div class="card" style="max-height:100%">
           <a href="{% url 'image-details' image.id %}">
           <img src="{{ image.image.url }}" alt="{{ image.title }}" style="max-width: 100%;">
         </a>
