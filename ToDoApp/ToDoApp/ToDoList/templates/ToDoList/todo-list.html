@@ -51,12 +51,14 @@
                   </tr>
                 </thead>
                 <tbody>
+                {% for obj in listobj %}
                   <tr>
                     <th scope="row">1</th>
-                    <td><a href="{% url 'todo-item' 1 %}">Mark</a></td>
-                    <td>Otto DescriptionDescriptionDescriptionDescription Description Description</td>
+                    <td><a href="{% url 'todo-list' 1 %}">{{obj.title}}</a></td>
+                    <td>{{obj.description}}</td>
                     <td>@mdo</td>
                   </tr>
+                  {% endfor %}
                 </tbody>
               </table>
         </div>

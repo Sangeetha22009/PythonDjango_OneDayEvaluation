@@ -3,6 +3,8 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from .forms import UserRegistrationForm, ToDoListForm
 from .models import ToDoList
+from django.db.models import Q
+from django.core.paginator import Paginator
 # Create your views here.
 
 def todo_item(request, todolist_id):
@@ -48,9 +50,20 @@ def todo_list(request):
                 description = form.cleaned_data['description']
 
                 list_obj = ToDoList(
-                    title=title, description=description, uploaded_by = request.user.username )
+                    title=title, description=description, created_by = request.user.username )
                 list_obj.save()
                 messages.success(request, 'List Created Successfully !!')
-                return redirect('/')
+                
+                listobj = ToDoList.objects.all().order_by('-id').filter(Q(created_by = request.user.username))
+                paginator  = Paginator(listobj, 4)
+                current_page = request.GET.get('page')
+                paginated_list = paginator.get_page(current_page)
+                count = listobj.count
+                context = {
+                    'listobj' : paginated_list,
+                    'count': count
+                }
+                return render(request, 'ToDoList/todo-list.html', context)
+                
     return render(request, "ToDoList/todo-list.html")
 
