@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from .models import User, ToDoList
+from .models import User , ToDoItem, ToDoList
 
 class ToDoListForm(forms.ModelForm):
     class Meta:
@@ -15,3 +15,8 @@ class UserRegistrationForm(UserCreationForm):
     class Meta:
         model=User
         fields = ['username','email','password1','password2']
+
+class ToDoItemForm(forms.ModelForm):
+    class Meta:
+        model = ToDoItem
+        fields = ['title','description','due_date','is_completed']

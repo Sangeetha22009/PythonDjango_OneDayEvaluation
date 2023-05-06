@@ -18,7 +18,7 @@ class ToDoItem(models.Model):
     due_date = models.DateField()
     is_completed = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
-    todo_list = models.ForeignKey(ToDoList, on_delete=models.CASCADE)
+    todo_list = models.ForeignKey(ToDoList, on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
         return self.title
