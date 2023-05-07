@@ -127,11 +127,21 @@
 {% block scripts %}
 <script type="text/javascript">
 
-function post_action(type, post_id){
-
-    
-
-}
+    function post_action(type, post_id){
+        if (type == 'delete') {
+            var url = "{% url 'delete-post' post_id %}";
+            if(confirm('Are you sure want to delete this item?')){
+                window.location.href = url 
+            }
+        }
+        else if (type == 'like' ){
+            var url = "{% url 'like-post' post_id %}";
+            window.location.href = url
+        }
+        else{
+            return
+        }
+    }
 
 </script>
 
