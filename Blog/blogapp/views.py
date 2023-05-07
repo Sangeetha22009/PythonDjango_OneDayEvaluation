@@ -6,6 +6,7 @@ from .models import Blog, BlogPost, Comment,  Share
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.core.paginator import Paginator
+from django.urls import reverse
 
 # Create your views here.
 
@@ -87,3 +88,62 @@ def view_posts(request, blog_id):
         current_page = 1
     paged_posts = paginator.get_page(current_page)
     return render(request, 'blogapp/view-posts.html', {'blog_id': blog_id, 'posts':paged_posts,  'count': posts.count })
+
+
+@login_required(login_url='login')
+def add_edit_post(request, blog_id, post_id = None):
+    if request.method == 'POST':
+            form = BlogPostForm(request.POST, request.FILES)
+            breakpoint()
+            if form.is_valid():
+                title = form.cleaned_data['title']
+                content = form.cleaned_data['content']
+                image = form.cleaned_data['image']
+                if post_id is None:
+                    post_id = request.POST.get('post_id')
+                blog = Blog.objects.get(id=blog_id)
+                if post_id is not None:
+                    blog_post = BlogPost.objects.get(id=post_id)
+                    blog_post.blog = blog
+                    blog_post.title = title
+                    blog_post.content = content
+                    blog_post.save()
+                    messages.success(request, 'Blog Post Updated Successfully !!')
+                else: 
+                    blog_post = BlogPost(
+                    title=title, content=content, image = image, created_by = request.user, blog = blog)                
+                    blog_post.save()
+                    messages.success(request, 'Blog post created successfully!!')  
+                url = reverse('view-posts', args=[str(blog_id)])              
+                return redirect(url)
+            else:
+                messages.error(request, r'Error occured while creating\updating blog post!!')
+                return render(request, 'blogapp/add-edit-post.html', {'blog_id':blog_id}) 
+    else:
+        if post_id is not None:
+            post = BlogPost.objects.get(id=post_id)                
+            postobj = BlogPost.objects.all().order_by('-id') .filter(Q(created_by = request.user))
+            count = postobj.count
+            context = {
+                # 'postobj' : postobj,
+                'count': count,
+                'item': post,
+                'is_edit':True,
+                'blog_id': blog_id
+            }
+            return render(request, 'blogapp/add-edit-post.html', context)
+        else:            
+            return render(request, 'blogapp/add-edit-post.html', {'blog_id':blog_id} )
+    
+# @login_required(login_url='login')
+# def edit_post(request, post_id):
+#     post = BlogPost.objects.get(id=post_id)                
+#     postobj = BlogPost.objects.all().order_by('-id') .filter(Q(created_by = request.user))
+#     count = postobj.count
+#     context = {
+#         # 'postobj' : postobj,
+#         'count': count,
+#         'item': post,
+#         'is_edit':True
+#     }
+#     return render(request, 'blogapp/add-edit-post.html', context)
