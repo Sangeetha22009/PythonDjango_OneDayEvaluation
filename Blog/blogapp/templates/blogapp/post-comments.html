@@ -1,47 +1,62 @@
-<div class="container w-75 my-4">
-    <h2 class="blog-post-title">{{post.title}}</h2>
-    <br>
-    <div class="media">          
-          <div class="media-body">
-                {{post.created_at}}
-          </div>
-    </div>
-    <br>
-    <img src="/media/{{post.image}}" alt="" height="250px" width="500px">
-    <br>
-    <p>{{post.content}}.</p>
-    <hr>
-    {% if user.is_authenticated %}
-    <div class="container">
-          <h2>Add Comments Here</h2>
-          <form action="{% url  'post-comments' post.id %}" method="POST">
-             {% csrf_token %}
-                <div class="form-floating">
-                      <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2"
-                            style="height: 100px" id="content" name="content"></textarea>
-                      <label for="floatingTextarea2">Leave a comment here.</label>
-                      <br>
-                      <button type="submit" class="btn btn-primary">Comment</button>
-                </div>
-          </form>
-          {% else %}
-          <div class="container">
-                <h4><a href="{%url 'login' %}">Login</a> to post comments below.</h4>
-                {% endif %}
-                <br>
-                <h2>All Comments ({{comments.count}})</h2>
-                <br>
-                {% for comment in comments %}
-                <div class="card">
-                      <div class="card-header">
-                            <span style="font-size: 22px;">{{comment.created_by}} </span> <span
-                                  style="font-size: 12px;">{{comment.create_at}}</span>
-                      </div>
-                      <div class="card-body">
-                            <h6 class="card-text">{{comment.comment}}</h6>
-                      </div>
-                </div>
-                <br>
-                {% endfor %}
-          </div>
-    </div>
+{% extends 'blogapp/layouts/main.html' %}
+{% block title %}
+<title>Blogs</title>
+{% endblock title %}
+
+{% block content %}
+
+<div class="container mt-5 mb-3">
+      <div class="row" style="margin-top: 5%;">
+            <div class="col-12">
+                  <h1>
+                        Comments
+                  </h1>
+                  <hr style="border: color #b8bfc2;">
+            </div>
+      </div>
+</div>
+      <div class="container w-75 my-4">
+            <h4 class="blog-post-title">{{post.title}}</h4>
+            <h5 class="blog-post-title"> {{post.created_at}}</h5>
+            <br>
+            <img src="/media/{{post.image}}" alt="" height="200px" width="400px">
+            <br>
+            <div style="padding-top:25px;">
+                  <p>{{post.content}}.</p>
+            </div>
+            <hr>
+            {% if user.is_authenticated %}
+            <div class="container">
+                  <h2>Add Comments Here</h2>
+                  <form action="{% url  'post-comments' post.id %}" method="POST">
+                        {% csrf_token %}
+                        <div class="form-floating">
+                              <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2"
+                                    style="height: 100px" id="comment" name="comment"></textarea>
+                              <label for="floatingTextarea2">Leave a comment here.</label>
+                              <br>
+                              <button type="submit" class="btn btn-primary">Add Comment</button>
+                        </div>
+                  </form>
+                  {% else %}
+                  <div class="container">
+                        <h4><a href="{%url 'login' %}">Login</a> to post comments below.</h4>
+                        {% endif %}
+                        <br>
+                        <h2>All Comments ({{comments.count}})</h2>
+                        <br>
+                        {% for comment in comments %}
+                        <div class="card">
+                              <div class="card-header">
+                                    <span style="font-size: 22px;">{{comment.created_by}} </span> <span
+                                          style="font-size: 12px;">{{comment.create_at}}</span>
+                              </div>
+                              <div class="card-body">
+                                    <h6 class="card-text">{{comment.comment}}</h6>
+                              </div>
+                        </div>
+                        <br>
+                        {% endfor %}
+                  </div>
+            </div>
+            {% endblock content %}
