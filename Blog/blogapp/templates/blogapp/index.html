@@ -12,12 +12,12 @@
         {% for post in posts %}
         <div class="col-lg-4 my-4">
             <div class="card shadow" style="width: 20rem; height: 33rem;">
-                <img src="/media/{{post.image}}" class="card-img-top" alt="..." height="250px">
+                <img src="/media/{{post.cover_image}}" class="card-img-top" alt="..." height="250px">
                 <div class="card-body">
                   <h4 class="card-title"> <b>{{post.title}} </b>
                     <small>by {{post.created_by}}</small>
                   </h4>
-                  <p class="card-text">{{post.content| truncatechars:200}}</p>
+                  <p class="card-text">{{post.description | truncatechars:200}}</p>
                   <a href="blog/{{post.slug}}" class="btn btn-primary"> Read More
                 </a>
                 </div>

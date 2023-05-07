@@ -11,8 +11,7 @@ from django.core.paginator import Paginator
 
 @login_required(login_url="login")
 def index(request):
-    print('test' , request.user.id)
-    posts = BlogPost.objects.filter(created_by=request.user.id).order_by('-id')
+    posts = Blog.objects.filter(created_by=request.user.id).order_by('-id')
     paginator = Paginator(posts, 5)
     current_page = request.GET.get('page')
     if current_page is None:
@@ -55,7 +54,6 @@ def register(request):
 def create_blog(request):    
         if request.method == 'POST':
             form = BlogForm(request.POST, request.FILES)
-            breakpoint()
             if form.is_valid():
                 title = form.cleaned_data['title']
                 description = form.cleaned_data['description']
@@ -67,6 +65,7 @@ def create_blog(request):
                 return redirect('/')
             else:
                 messages.error(request, 'Error occured while creating blog!!')
+                return render(request, 'blogapp/create-blog.html') 
         else:            
             return render(request, 'blogapp/create-blog.html')    
         
