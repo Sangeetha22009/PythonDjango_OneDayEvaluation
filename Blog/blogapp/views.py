@@ -134,4 +134,4 @@ def add_edit_post(request, blog_id, post_id = None):
             return render(request, 'blogapp/add-edit-post.html', context)
         else:            
             return render(request, 'blogapp/add-edit-post.html', {'blog_id':blog_id} )
-    
+
