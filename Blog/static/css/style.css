@@ -9,7 +9,7 @@
 
 .navbar-dark,
 .bg-dark {
-  background-color: #70de51 !important;
+    background-color: #70de51 !important;
 }
 
 .btn-primary {
@@ -20,6 +20,7 @@
 
 html {
     font-size: 14px;
+    color: black !important;
 }
 
 body {
