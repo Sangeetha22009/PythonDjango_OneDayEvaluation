@@ -135,3 +135,36 @@ def add_edit_post(request, blog_id, post_id = None):
         else:            
             return render(request, 'blogapp/add-edit-post.html', {'blog_id':blog_id} )
 
+@login_required(login_url='login')
+def delete_post(request,post_id):
+    post = BlogPost.objects.get(id=post_id)
+    blog_id = post.blog.id    
+    if post is not None:
+        post.delete()
+        messages.success(request, 'Post deleted successfully !')
+        url = reverse('view-posts', args=[str(blog_id)])              
+        return redirect(url)
+    else:
+        pass
+
+@login_required(login_url='login')
+def like_post(request,post_id,is_like):
+    breakpoint()
+    is_like = request.GET.get('is_like')
+    if is_like is not None:
+        is_like = bool(is_like)
+        post = BlogPost.objects.get(id=post_id)
+        blog_id = post.blog.id
+        if post is not None:
+            post.is_like = is_like
+            post.save()
+            if is_like == True:
+                messages.success(request, 'Post liked successfully !')
+                
+            else:
+                messages.success(request, 'Post dis-liked successfully !')
+
+            url = reverse('view-posts', args=[str(blog_id)])              
+            return redirect(url)
+    else:
+        pass
