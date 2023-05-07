@@ -11,13 +11,17 @@ from django.core.paginator import Paginator
 
 @login_required(login_url="login")
 def index(request):
-    posts = Blog.objects.filter(created_by=request.user.id).order_by('-id')
-    paginator = Paginator(posts, 5)
+    keyword = request.GET.get('keyword')    
+    if keyword is None:
+        keyword = ''
+    blogs = Blog.objects.filter(Q(created_by=request.user.id) & (Q(title__icontains=keyword)
+                                | Q(description__icontains=keyword))).order_by('-id')
+    paginator = Paginator(blogs, 5)
     current_page = request.GET.get('page')
     if current_page is None:
         current_page = 1
-    paged_posts = paginator.get_page(current_page)
-    return render(request, "blogapp/index.html", {'posts':paged_posts, 'count': posts.count })
+    paged_blogs = paginator.get_page(current_page)
+    return render(request, "blogapp/index.html", {'blogs':paged_blogs, 'count': blogs.count })
 
 def user_login(request):
     if request.user.is_authenticated:
@@ -72,8 +76,14 @@ def create_blog(request):
 
 @login_required(login_url='login')
 def view_posts(request, blog_id):
-    return render(request, 'blogapp/view-posts.html')
-
-@login_required(login_url='login')
-def add_post(request, blog_id):
-    return render(request, 'blogapp/add-post.html')
+    keyword = request.GET.get('keyword')  
+    if keyword is None:
+        keyword = ''
+    posts = BlogPost.objects.filter(Q(blog__id=blog_id) & Q(created_by=request.user.id) & (Q(title__icontains=keyword)
+                                | Q(content__icontains=keyword))).order_by('-id')
+    paginator = Paginator(posts, 5)
+    current_page = request.GET.get('page')
+    if current_page is None:
+        current_page = 1
+    paged_posts = paginator.get_page(current_page)
+    return render(request, 'blogapp/view-posts.html', {'blog_id': blog_id, 'posts':paged_posts,  'count': posts.count })
