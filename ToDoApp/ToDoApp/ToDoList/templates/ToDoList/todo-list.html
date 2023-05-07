@@ -20,18 +20,35 @@
         <div class="container">
             <div class="row">
                 <div class="col-12">
-                    <form action="" method="post">
+                    <form action="{% url 'todo-list' %}" method="post">
                         {% csrf_token %}
                         <div class="mb-4">
                             <label for="" class="form-label">Title</label>
-                               <input type="text" name="title" id="title" required max-length="100" placeholder="Enter title for List" class="form-control">                     
+                            {% if is_edit %}
+                            <input type="hidden" name="id" value="{{item.id}}">
+                            <input type="text" name="title" id="title" value="{{item.title}}" required max-length="100" placeholder="Enter title for List" class="form-control" >                     
+                            {% else %}
+                            <input type="text" name="title" id="title" required max-length="100" placeholder="Enter title for List" class="form-control" >                     
+                            {% endif %}
                         </div>
                         <div class="mb-4">
                             <label for="" class="form-label">Description</label>
+                            {% if is_edit %}
+                            <textarea name="description" id="description" required max-length="200" placeholder="Enter Description"
+                            class="form-control" style="resize:none;">{{item.description}}</textarea>
+                            {% else %}
                             <textarea name="description" id="description" required max-length="200" placeholder="Enter Description"
                             class="form-control" style="resize:none;"></textarea>
+                            {% endif %}
+                            
                         </div>
-                        <button type="submit" class="btn btn-primary">Create List</button>
+                        <button type="submit" class="btn btn-primary">
+                            {% if is_edit %} 
+                                Update List
+                            {% else %} 
+                                Create List
+                            {% endif %}
+                        </button>
                     </form>                    
                 </div>
             </div>
@@ -48,6 +65,7 @@
                     <th scope="col">Title</th>
                     <th scope="col">Description</th>
                     <th scope="col">Created At</th>
+                    <th scope="col">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -58,6 +76,10 @@
                     <td><a href="{% url 'todo-item' obj.id %}">{{obj.title}}</a></td>
                     <td>{{obj.description}}</td>
                     <td>{{ obj.created_at}}</td>
+                    <td>
+                        <a href="{% url 'edit-list' obj.id %}"> Edit </a> |
+                        <a href="#" onclick="confirm_delete('{{obj.id}}')">Delete</a>
+                    </td>
                   </tr>
                   {% endfor %}
                   {% else %}
@@ -71,3 +93,16 @@
 </div>
 </div>
 {% endblock content %}
+
+{% block scripts %}
+<script type="text/javascript">
+
+    function confirm_delete(list_id){
+        if (confirm("Are you sure want to delete this record ? ")){
+            window.location.href = "/delete-list/"+ list_id;
+        }
+    }
+
+</script>
+
+{% endblock %}

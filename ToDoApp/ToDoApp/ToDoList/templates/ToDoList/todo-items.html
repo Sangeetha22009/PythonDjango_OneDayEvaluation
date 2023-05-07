@@ -25,21 +25,23 @@
                                 <input type="hidden" id="todolist_id" name="todolist_id" value="{{todolist_id}}">
                                 <div class="mb-4">
                                     <label for="" class="form-label">Title</label>
-                                    <input type="text" name="title" id="title" required placeholder="Enter title for List"
-                                        class="form-control">
+                                    <input type="text" name="title" id="title" required
+                                        placeholder="Enter title for List" class="form-control">
                                 </div>
                                 <div class="mb-4">
                                     <label for="" class="form-label">Description</label>
-                                    <textarea name="description" id="description" required placeholder="Enter Description"
-                                        class="form-control" style="resize:none;"></textarea>
+                                    <textarea name="description" id="description" required
+                                        placeholder="Enter Description" class="form-control"
+                                        style="resize:none;"></textarea>
                                 </div>
                                 <div class="mb-4">
                                     <label for="" class="form-label">Due Date</label>
-                                    <input type="date" name="due_date" id="due_date" required placeholder="Enter Due Date"
-                                        class="form-control">
+                                    <input type="date" name="due_date" id="due_date" required
+                                        placeholder="Enter Due Date" class="form-control">
                                 </div>
                                 <div class="custom-control custom-checkbox mb-4">
-                                    <input type="checkbox" class="custom-control-input" id="is_completed" name="is_completed">
+                                    <input type="checkbox" class="custom-control-input" id="is_completed"
+                                        name="is_completed">
                                     <label class="custom-control-label" for="is_completed">Completed</label>
                                 </div>
                                 <button type="submit" class="btn btn-primary">Add Item</button>
@@ -54,85 +56,106 @@
                 <div class="container">
                     <table class="table table-bordered">
                         <thead class="thead-dark">
-                          <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Title</th>
-                            <th scope="col">Description</th>
-                            <th scope="col">Due Date</th>
-                            <th scope="col">Created At</th>
-                            <th scope="col">ToDo List</th>
-                            <th scope="col">Completed</th>
-                            <th scope="col">Actions</th>
-                          </tr>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Title</th>
+                                <th scope="col">Description</th>
+                                <th scope="col">Due Date</th>
+                                <th scope="col">Created At</th>
+                                <th scope="col">ToDo List</th>
+                                <th scope="col">Completed</th>
+                                <th scope="col">Actions</th>
+                            </tr>
                         </thead>
                         <tbody>
                             {% if items %}
-                            {% for item in items %} 
-                          <tr>
-                            <th scope="row">{{forloop.counter}}</th>
-                            <td><a href="{% url 'todo-list'  %}">{{item.title}}</a></td>
-                            <td>{{item.description}}</td>
-                            <td>{{item.due_date}}</td>
-                            <td>{{item.created_at}}</td>
-                            <td>{{item.todo_list}}</td>
-                            {% if item.is_completed == True %}
-                            <td class="field-is_staff"><img src="/static/admin/img/icon-yes.svg" alt="item.is_completed "></td>
+                            {% for item in items %}
+                            <tr>
+                                <th scope="row">{{forloop.counter}}</th>
+                                <td><a href="{% url 'todo-list'  %}">{{item.title}}</a></td>
+                                <td>{{item.description}}</td>
+                                <td>{{item.due_date}}</td>
+                                <td>{{item.created_at}}</td>
+                                <td>{{item.todo_list}}</td>
+                                {% if item.is_completed == True %}
+                                <td class="field-is_staff"><img src="/static/admin/img/icon-yes.svg"
+                                        alt="item.is_completed "></td>
+                                {% else %}
+                                <td class="field-is_staff"><img src="/static/admin/img/icon-no.svg"
+                                        alt="item.is_completed "></td>
+                                {% endif %}
+                                <td>
+                                    <a href="#"> Edit </a> |
+                                    <a href="#" onclick="confirm_delete('{{item.id }}')"> Delete</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
                             {% else %}
-                            <td class="field-is_staff"><img src="/static/admin/img/icon-no.svg" alt="item.is_completed "></td>
-                            {% endif %}                          
-                            <td>
-                                <a href="#"> Edit </a> | 
-                                <a href="#" onclick="confirm_delete('{{item.id }}','{{todolist_id}}')"> Delete</a>
-                            </td>
-                        </tr>
-                          {% endfor %}
-                          {% else %}
-                          <tr> <td colspan="7" class="text-center"> No items found </td></tr>
-                          {% endif %}
+                            <tr>
+                                <td colspan="7" class="text-center"> No items found </td>
+                            </tr>
+                            {% endif %}
                         </tbody>
-                    </table>                    
+                    </table>
                 </div>
             </section>
         </div>
-        <!-- <nav class="mt-4" aria-label="Page navigation sample">
-            {% if items.has_other_pages %}
-          <ul class="pagination">
-            {% if items.has_previous %}
-                <li class="page-item "><a class="page-link" href="?page={{items.previous_page_number}}">Previous</a></li>
-            {% else %}
-                <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
-            {% endif %}
-            {% for i in items.paginator.page_range %}
-                {% if items.number == i %}
-                    <li class="page-item disabled"><a class="page-link" href="#">{{i}}</a></li>
-                {% else %}
-                    <li class="page-item"><a class="page-link" href="?page={{i}}">{{i}}</a></li>
-                {% endif %}
-            {% endfor %}
-            {% if items.has_next %}
-                <li class="page-item"><a class="page-link" href="?page={{items.next_page_number}}">Next</a></li>
-            {% else %}
-                <li class="page-item disabled"><a class="page-link" href="#">Next</a></li>
-            {% endif %}
-          </ul>
-          {% endif %}
-        </nav> -->
-
     </div>
 </div>
 {% endblock content %}
 
 {% block scripts %}
-<script type="text/javascript"> 
-    function confirm_delete(item_id, todolist_id){
-        var url = encodeURI("{ url 'delete-item' " + item_id +" " + todolist_id +" %}")
-        console.log(url)
-        if(confirm('Are you sure want to delete?')){
-            window.location.href = url;
+<script type="text/javascript">
+    
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
         }
-        else{
-            return 
-        }        
+    }
+    return cookieValue;
+}
+        var csrftoken = getCookie('csrftoken');
+    function confirm_delete(item_id) {
+        var url = "{% url 'delete-item' %}"
+        var redirecturl = "{% url 'todo-item' todolist_id %}"
+        var todolist_id = "{{todolist_id}}"
+        if (confirm('Are you sure want to delete?')) {
+            try {
+                fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        "content-type": "application/json",
+                        "X-CSRFTOKEN": csrftoken
+                    },
+                    body: JSON.stringify({
+                        todo_item_id: item_id
+                    })
+                }).then((response) => response.json())
+                .then((data) => {
+                    debugger;
+                    if(data.is_deleted == true) {
+                        alert('deleted todo item successfully !')
+                        window.location.href = redirecturl  
+                    }
+                    else {
+                        alert('Error in deletion, please try again')
+                    }
+                });   
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        else {
+            return
+        }
     }
 </script>
 
