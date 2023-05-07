@@ -2,12 +2,22 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from .forms import UserRegistrationForm
-# BlogForm, BlogPostForm, CommentForm
-# from .models import Blog, BlogPost, Comment, Like, Share
+from .models import Blog, BlogPost, Comment,  Share
+from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
+
 # Create your views here.
 
+@login_required(login_url="login")
 def index(request):
-    return render(request, "blogapp/index.html")
+    print('test' , request.user.id)
+    posts = BlogPost.objects.filter(created_by=request.user.id).order_by('-id')
+    paginator = Paginator(posts, 5)
+    current_page = request.GET.get('page')
+    if current_page is None:
+        current_page = 1
+    paged_posts = paginator.get_page(current_page)
+    return render(request, "blogapp/index.html", {'posts':paged_posts, 'count': posts.count })
 
 def user_login(request):
     if request.user.is_authenticated:
