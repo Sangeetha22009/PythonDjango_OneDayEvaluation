@@ -153,10 +153,8 @@ def delete_post(request,post_id):
     if post is not None:
         post.delete()
         messages.success(request, 'Post deleted successfully !')
-        url = reverse('view-posts', args=[str(blog_id)])              
-        return redirect(url)
-    else:
-        pass
+    url = reverse('view-posts', args=[str(blog_id)])              
+    return redirect(url)
 
 @login_required(login_url='login')
 def like_post(request,post_id,is_like):
@@ -173,5 +171,18 @@ def like_post(request,post_id,is_like):
             else:
                 messages.success(request, 'Post dis-liked successfully !')
 
+    url = reverse('view-posts', args=[str(blog_id)])              
+    return redirect(url)
+
+
+@login_required(login_url='login')
+def share_post(request,post_id,shared_to):
+    post = BlogPost.objects.get(id=post_id)
+    blog_id = post.blog.id
+    if shared_to is not None:
+        if post is not None:
+            share = Share(post = post, social_media = shared_to, created_by = request.user)
+            share.save()
+            messages.success(request, 'Post shared to' + shared_to + ' successfully !')
     url = reverse('view-posts', args=[str(blog_id)])              
     return redirect(url)
