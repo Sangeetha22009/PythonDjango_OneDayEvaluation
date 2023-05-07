@@ -8,6 +8,34 @@ from django.db.models import Q
 from django.core.paginator import Paginator
 
 # Create your views here.
+
+@login_required(login_url='login')
+def edit_item(request, item_id, todo_list_id):
+    return redirect('todo-item/' + str(todo_list_id))
+
+@login_required(login_url='login')
+def delete_item(request, todo_item_id, todo_list_id):
+    # prompt = input('are you sure want to delete?')
+    # if prompt == 'yes':
+        item = ToDoItem.objects.filter(id=todo_item_id)
+        if item is not None:
+            item.delete()
+            items = ToDoItem.objects.all().order_by('-id').filter(todo_list__id = todo_list_id)
+            form = ToDoItemForm()
+            context = {
+                'form': form,
+                'items': items,
+                'todolist_id': todo_list_id
+            } 
+            return render(request, "ToDoList/todo-items.html", context)
+        else:
+            messages.error(request, 'Item not found')
+            return redirect('/todo-item/' + str(todo_list_id))
+    # else:
+    #     return redirect('/todo-item/' + str(todo_list_id))
+
+        
+
 @login_required(login_url='login')
 def todo_item(request, todolist_id):
     if request.method == 'POST':

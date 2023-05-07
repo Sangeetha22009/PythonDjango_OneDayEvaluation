@@ -62,6 +62,7 @@
                             <th scope="col">Created At</th>
                             <th scope="col">ToDo List</th>
                             <th scope="col">Completed</th>
+                            <th scope="col">Actions</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -79,7 +80,11 @@
                             {% else %}
                             <td class="field-is_staff"><img src="/static/admin/img/icon-no.svg" alt="item.is_completed "></td>
                             {% endif %}                          
-                          </tr>
+                            <td>
+                                <a href="#"> Edit </a> | 
+                                <a href="#" onclick="confirm_delete('{{item.id }}','{{todolist_id}}')"> Delete</a>
+                            </td>
+                        </tr>
                           {% endfor %}
                           {% else %}
                           <tr> <td colspan="7" class="text-center"> No items found </td></tr>
@@ -116,3 +121,19 @@
     </div>
 </div>
 {% endblock content %}
+
+{% block scripts %}
+<script type="text/javascript"> 
+    function confirm_delete(item_id, todolist_id){
+        var url = encodeURI("{ url 'delete-item' " + item_id +" " + todolist_id +" %}")
+        console.log(url)
+        if(confirm('Are you sure want to delete?')){
+            window.location.href = url;
+        }
+        else{
+            return 
+        }        
+    }
+</script>
+
+{% endblock scripts %}
