@@ -14,8 +14,7 @@ class Blog(models.Model):
     description = models.TextField()
     cover_image = models.ImageField(upload_to= get_file_name(path='uploads/cover_images'))
     created_by = models.ForeignKey(User, on_delete=models.CASCADE)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now =True)
+    created_at = models.DateTimeField(auto_now_add=True)    
 
 class BlogPost(models.Model):
     title = models.CharField(max_length=100, null=False, blank=False)
