@@ -160,11 +160,10 @@ def delete_post(request,post_id):
 
 @login_required(login_url='login')
 def like_post(request,post_id,is_like):
-    is_like = request.GET.get('is_like')
+    post = BlogPost.objects.get(id=post_id)
+    blog_id = post.blog.id
     if is_like is not None:
         is_like = bool(is_like)
-        post = BlogPost.objects.get(id=post_id)
-        blog_id = post.blog.id
         if post is not None:
             post.is_like = is_like
             post.save()
@@ -174,7 +173,5 @@ def like_post(request,post_id,is_like):
             else:
                 messages.success(request, 'Post dis-liked successfully !')
 
-            url = reverse('view-posts', args=[str(blog_id)])              
-            return redirect(url)
-    else:
-        pass
+    url = reverse('view-posts', args=[str(blog_id)])              
+    return redirect(url)

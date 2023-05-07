@@ -139,7 +139,8 @@
             }
         }
         else if (type == 'like' ){
-            window.location.href = "/like-post/"+ post_id +"/is_like="+ is_like ;
+          console.log(is_like)
+            window.location.href = "/like-post/"+ post_id +"/"+ (is_like == 'true' ? 1 : 0) ;
         }
         else{
             return
