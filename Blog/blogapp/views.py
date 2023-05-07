@@ -1,7 +1,9 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from .forms import UserRegistrationForm
+# BlogForm, BlogPostForm, CommentForm
+# from .models import Blog, BlogPost, Comment, Like, Share
 # Create your views here.
 
 def index(request):
