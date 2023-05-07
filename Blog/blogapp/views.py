@@ -135,6 +135,17 @@ def add_edit_post(request, blog_id, post_id = None):
         else:            
             return render(request, 'blogapp/add-edit-post.html', {'blog_id':blog_id} )
 
+
+@login_required(login_url = 'login')    
+def post_comments(request, post_id):
+    post = BlogPost.objects.get(id=post_id)
+    comments = Comment.objects.filter(post=post).first()
+    if request.method=="POST":
+        comment = request.POST.get('comment')
+        comment = Comment(comment = comment, post=post, created_by = request.user)
+        comment.save()
+    return render(request, "post-comments.html", {'post':post, 'comments':comments}) 
+
 @login_required(login_url='login')
 def delete_post(request,post_id):
     post = BlogPost.objects.get(id=post_id)
@@ -149,7 +160,6 @@ def delete_post(request,post_id):
 
 @login_required(login_url='login')
 def like_post(request,post_id,is_like):
-    breakpoint()
     is_like = request.GET.get('is_like')
     if is_like is not None:
         is_like = bool(is_like)
