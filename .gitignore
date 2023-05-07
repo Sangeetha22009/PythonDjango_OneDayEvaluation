@@ -29,16 +29,3 @@ ToDoApp/ToDoApp/ToDoList/migrations/__pycache__/0001_initial.cpython-311.pyc
 ToDoApp/ToDoApp/db.sqlite3
 ToDoApp/ToDoApp/ToDoList/__pycache__/forms.cpython-311.pyc
 ToDoApp/ToDoApp/db.sqlite3
-Blog/Blog/__pycache__/__init__.cpython-311.pyc
-Blog/Blog/__pycache__/settings.cpython-311.pyc
-Blog/Blog/__pycache__/urls.cpython-311.pyc
-Blog/Blog/__pycache__/wsgi.cpython-311.pyc
-Blog/blogapp/migrations/__pycache__/__init__.cpython-311.pyc
-Blog/blogapp/__pycache__/__init__.cpython-311.pyc
-Blog/blogapp/__pycache__/admin.cpython-311.pyc
-Blog/blogapp/__pycache__/apps.cpython-311.pyc
-Blog/blogapp/__pycache__/forms.cpython-311.pyc
-Blog/blogapp/__pycache__/models.cpython-311.pyc
-Blog/blogapp/__pycache__/urls.cpython-311.pyc
-Blog/blogapp/__pycache__/views.cpython-311.pyc
-Blog/Blog/settings.py
