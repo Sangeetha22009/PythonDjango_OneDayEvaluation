@@ -1,0 +1,73 @@
+{% extends 'blogapp/layouts/main.html' %}
+{% block title %}
+<title>Blogs</title>
+{% endblock title %}
+
+{% block content %}
+<div class="container" style="margin:5%;">
+    <div class="row">
+        <div class="col-12">
+            <h1>
+                Add Post
+            </h1>
+            <hr style="border: color #b8bfc2;">
+            {% include "blogapp/include/message.html" %}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-5">
+            <section class="py-5">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12">
+                            <form action="{% url 'add-edit-post' blog_id %}" method="post" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                {% if is_edit %}
+                                <div class="mb-4">
+                                    <label for="" class="form-label">Title</label>
+                                    <input type="hidden" id="blog_id" name="blog_id" value="{{blog_id}}">
+                                    <input type="hidden" id="post_id" name="post_id" value="{{item.id}}">
+                                    <input type="text" name="title" id="title" value="{{item.title}}" required
+                                        max-length="100" placeholder="Enter title for List" class="form-control">
+                                </div>
+                                <div class="mb-4">
+                                    <label for="" class="form-label">Content</label>
+                                    <textarea name="content" id="content" required max-length="200"
+                                        placeholder="Enter Description" class="form-control"
+                                        style="resize:none;">{{item.content}}</textarea>
+                                </div>
+                                <div class="mb-4">
+                                    <label for="image" class="form-label">Image *</label>
+                                    <img src="{{ item.image.url }}" alt="Current Image">
+                                    <br>
+
+                                    <input class="form-control" type="file" id="image" name="cover_image" required>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Update Post</button>
+                                {% else %}
+                                <div class="mb-4">
+                                    <label for="" class="form-label">Title</label>
+                                    <input type="text" name="title" id="title" required max-length="100"
+                                        placeholder="Enter title for List" class="form-control">
+                                </div>
+                                <div class="mb-4">
+                                    <label for="" class="form-label">Description</label>
+                                    <textarea name="content" id="content" required max-length="200"
+                                        placeholder="Enter Description" class="form-control"
+                                        style="resize:none;"></textarea>
+                                </div>
+                                <div class="mb-4">
+                                    <label for="image" class="form-label">Image *</label>
+                                    <input class="form-control" type="file" id="image" name="image" required>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Add Post</button>
+                                {% endif %}
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+{% endblock content %}
