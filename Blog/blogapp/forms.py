@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from .models import User
+from .models import User, Blog, BlogPost
 
 class UserRegistrationForm(UserCreationForm):
     username = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control', 'placeholder': 'Enter User Name'}))
@@ -10,3 +10,13 @@ class UserRegistrationForm(UserCreationForm):
     class Meta:
         model=User
         fields = ['username','email','password1','password2']
+
+class BlogForm(forms.ModelForm):
+    class Meta:
+        model = Blog
+        fields = ['title', 'description', 'cover_image']
+
+class BlogPostForm(forms.ModelForm):
+    class Meta:
+        model = BlogPost
+        fields = ['title', 'content', 'image']
