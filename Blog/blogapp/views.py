@@ -87,3 +87,10 @@ def view_posts(request, blog_id):
         current_page = 1
     paged_posts = paginator.get_page(current_page)
     return render(request, 'blogapp/view-posts.html', {'blog_id': blog_id, 'posts':paged_posts,  'count': posts.count })
+
+
+def add_edit_post(request):
+    pass
+
+def like_post(request, item_id):
+    pass
