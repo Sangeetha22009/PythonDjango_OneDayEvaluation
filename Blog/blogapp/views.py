@@ -94,7 +94,6 @@ def view_posts(request, blog_id):
 def add_edit_post(request, blog_id, post_id = None):
     if request.method == 'POST':
             form = BlogPostForm(request.POST, request.FILES)
-            breakpoint()
             if form.is_valid():
                 title = form.cleaned_data['title']
                 content = form.cleaned_data['content']
@@ -138,13 +137,13 @@ def add_edit_post(request, blog_id, post_id = None):
 
 @login_required(login_url = 'login')    
 def post_comments(request, post_id):
-    post = BlogPost.objects.get(id=post_id)
-    comments = Comment.objects.filter(post=post).first()
+    post = BlogPost.objects.get(id=post_id)    
     if request.method=="POST":
         comment = request.POST.get('comment')
         comment = Comment(comment = comment, post=post, created_by = request.user)
         comment.save()
-    return render(request, "post-comments.html", {'post':post, 'comments':comments}) 
+    comments = Comment.objects.filter(post=post)
+    return render(request, "blogapp/post-comments.html", {'post':post, 'comments':comments}) 
 
 @login_required(login_url='login')
 def delete_post(request,post_id):
