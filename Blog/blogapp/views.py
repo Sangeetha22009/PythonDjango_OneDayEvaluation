@@ -68,4 +68,12 @@ def create_blog(request):
                 return render(request, 'blogapp/create-blog.html') 
         else:            
             return render(request, 'blogapp/create-blog.html')    
-        
+
+
+@login_required(login_url='login')
+def view_posts(request, blog_id):
+    return render(request, 'blogapp/view-posts.html')
+
+@login_required(login_url='login')
+def add_post(request, blog_id):
+    return render(request, 'blogapp/add-post.html')
