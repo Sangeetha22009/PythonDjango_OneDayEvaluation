@@ -7,6 +7,7 @@ class BlogAdmin(admin.ModelAdmin):
 
 class BlogPostAdmin(admin.ModelAdmin):
     list_display = ['title', 'content', 'blog', 'created_by','created_at']
+    list_filter = ['blog', 'title','created_by']
 
 class CommentAdmin(admin.ModelAdmin):
     list_display = ['comment', 'post', 'created_by','created_at']

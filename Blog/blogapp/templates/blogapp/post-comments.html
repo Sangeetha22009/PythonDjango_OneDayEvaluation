@@ -25,7 +25,7 @@
                   <p>{{post.content}}.</p>
             </div>
             <hr>
-            {% if user.is_authenticated %}
+            <!-- {% if user.is_authenticated %} -->
             <div class="container">
                   <h2>Add Comments Here</h2>
                   <form action="{% url  'post-comments' post.id %}" method="POST">
@@ -38,10 +38,10 @@
                               <button type="submit" class="btn btn-primary">Add Comment</button>
                         </div>
                   </form>
-                  {% else %}
+                  <!-- {% else %}
                   <div class="container">
                         <h4><a href="{%url 'login' %}">Login</a> to post comments below.</h4>
-                        {% endif %}
+                        {% endif %} -->
                         <br>
                         <h2>All Comments ({{comments.count}})</h2>
                         <br>

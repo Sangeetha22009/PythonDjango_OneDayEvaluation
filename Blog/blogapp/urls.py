@@ -14,4 +14,5 @@ urlpatterns = [
     path('like-post/<int:post_id>/<int:is_like>', views.like_post, name="like-post"),
     path('post-comments/<int:post_id>/', views.post_comments, name='post-comments'),
     path('share-post/<int:post_id>/<str:shared_to>', views.share_post, name="share-post"),
+    path('read-more/<int:blog_id>/', views.read_more_blog, name='read-more-blog')
 ]

@@ -185,3 +185,12 @@ def share_post(request,post_id,shared_to):
             messages.success(request, 'Post shared to' + shared_to + ' successfully !')
     url = reverse('view-posts', args=[str(blog_id)])              
     return redirect(url)
+
+def read_more_blog(request, blog_id):
+    blog = Blog.objects.get(id=blog_id)
+    posts = BlogPost.objects.all().filter(blog_id = blog_id)        
+    context = {
+        'posts' : posts,
+        'blog': blog,
+    }
+    return render(request, 'blogapp/read-more-blog.html' , context)
