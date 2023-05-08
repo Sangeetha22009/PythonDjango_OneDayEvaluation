@@ -19,7 +19,7 @@
     <form action="{% url 'index' %}" class="search" method="GET">
         {% csrf_token %}
         <div class="input-group w-100">
-            <input type="text" class="form-control" style="width:60%;" placeholder="Search"
+            <input type="text" class="form-control"  placeholder="Search"
                 name="keyword">
             <div class="input-group-append">
                 <button class="btn btn-primary" type="submit">

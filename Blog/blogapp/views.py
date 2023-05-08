@@ -182,7 +182,7 @@ def share_post(request,post_id,shared_to):
         if post is not None:
             share = Share(post = post, social_media = shared_to, created_by = request.user)
             share.save()
-            messages.success(request, 'Post shared to' + shared_to + ' successfully !')
+            messages.success(request, 'Post shared to ' + shared_to + ' successfully !')
     url = reverse('view-posts', args=[str(blog_id)])              
     return redirect(url)
 
