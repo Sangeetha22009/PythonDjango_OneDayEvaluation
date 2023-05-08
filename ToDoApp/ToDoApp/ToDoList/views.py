@@ -33,34 +33,47 @@ def delete_item(request):
         return render(request, "ToDoList/todo-items.html")
      
 @login_required(login_url='login')
-def todo_item(request, todolist_id):
+def todo_item(request, todo_list_id, todo_item_id=None):    
     if request.method == 'POST':
         form = ToDoItemForm(request.POST)
         if form.is_valid():
             title = form.cleaned_data['title']
             description = form.cleaned_data['description']
-            todolist = ToDoList.objects.get(id=todolist_id)
+            todolist = ToDoList.objects.get(id=todo_list_id)
             due_date = form.cleaned_data['due_date']
             is_completed = form.cleaned_data['is_completed']
-            item = ToDoItem( todo_list = todolist, title = title, description=description, due_date= due_date,  is_completed = is_completed)
-            item.save()
-            messages.success(request, 'Item added succesfully !')
-            items = ToDoItem.objects.all().order_by('-id').filter(todo_list__id = todolist_id)
+            if todo_item_id is not None:
+                item_obj = ToDoItem.objects.get(id=todo_item_id)
+                item_obj.title = title
+                item_obj.description = description
+                item_obj.due_date = due_date
+                item_obj.is_completed = is_completed
+                item_obj.save()
+                messages.success(request, 'Item Updated Successfully !!')
+            else:
+                item = ToDoItem( todo_list = todolist, title = title, description=description, due_date= due_date,  is_completed = is_completed)
+                item.save()
+                messages.success(request, 'Item added succesfully !')
+            items = ToDoItem.objects.all().order_by('-id').filter(todo_list__id = todo_list_id)
             context = {
                 'items' : items,
-                'todolist_id': todolist_id
+                'todolist_id': todo_list_id
             }
             return render(request, "ToDoList/todo-items.html" , context)
         else:
             messages.error(request, 'Invalid form, please check and update')
         return render(request, "ToDoList/todo-items.html")
-    else:
-        items = ToDoItem.objects.all().order_by('-id').filter(todo_list__id = todolist_id)
+    else:                
+        list_edit_item = ToDoItem()
+        if todo_item_id is not None:
+            list_edit_item = ToDoItem.objects.get(Q(id = todo_item_id))            
+        items = ToDoItem.objects.all().order_by('-id').filter(todo_list__id = todo_list_id)
         form = ToDoItemForm()
         context = {
             'form': form,
             'items': items,
-            'todolist_id': todolist_id
+            'todolist_id': todo_list_id,
+            'list_edit_item': list_edit_item
         } 
         return render(request, "ToDoList/todo-items.html", context)
 

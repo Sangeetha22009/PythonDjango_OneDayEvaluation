@@ -19,28 +19,37 @@
             <section class="py-5">
                 <div class="container">
                     <div class="row">
-                        <div class="col-12">
-                            <form action="" method="post">
+                        <div class="col-12"> 
+                            {% if list_edit_item.id  %}
+                            <form action="{% url 'todo-item' todolist_id list_edit_item.id %}" method="post">
+                                {% else %}
+                                <form action="{% url 'todo-item' todolist_id %}" method="post">
+                                    {% endif %}
                                 {% csrf_token %}
                                 <input type="hidden" id="todolist_id" name="todolist_id" value="{{todolist_id}}">
+                                <input type="hidden" id="id" name="id" value="{{list_edit_item.id}}">
                                 <div class="mb-4">
                                     <label for="" class="form-label">Title</label>
-                                    <input type="text" name="title" id="title" required
+                                    <input type="text" name="title" id="title" required value="{{list_edit_item.title}}"
                                         placeholder="Enter title for List" class="form-control">
                                 </div>
                                 <div class="mb-4">
                                     <label for="" class="form-label">Description</label>
-                                    <textarea name="description" id="description" required
+                                    <textarea name="description" id="description" required 
                                         placeholder="Enter Description" class="form-control"
-                                        style="resize:none;"></textarea>
+                                        style="resize:none;">{{list_edit_item.description}}</textarea>  
                                 </div>
                                 <div class="mb-4">
                                     <label for="" class="form-label">Due Date</label>
-                                    <input type="date" name="due_date" id="due_date" required
+                                    <input type="date" name="due_date" id="due_date" required value="{{ list_edit_item.due_date|date:'Y-m-d' }}"
                                         placeholder="Enter Due Date" class="form-control">
-                                </div>
+                                </div>                                      
                                 <div class="custom-control custom-checkbox mb-4">
-                                    <input type="checkbox" class="custom-control-input" id="is_completed"
+                                    <input type="checkbox" class="custom-control-input" id="is_completed" 
+                                    {% if list_edit_item.is_completed %}
+                                        checked
+                                    {% endif %}
+
                                         name="is_completed">
                                     <label class="custom-control-label" for="is_completed">Completed</label>
                                 </div>
@@ -85,7 +94,7 @@
                                         alt="item.is_completed "></td>
                                 {% endif %}
                                 <td>
-                                    <a href="#"> Edit </a> |
+                                    <a href="{% url 'todo-item' todolist_id  item.id %}"> Edit </a> |
                                     <a href="#" onclick="confirm_delete('{{item.id }}')"> Delete</a>
                                 </td>
                             </tr>
