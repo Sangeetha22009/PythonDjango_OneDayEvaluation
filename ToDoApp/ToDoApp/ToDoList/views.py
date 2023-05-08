@@ -57,7 +57,7 @@ def todo_item(request, todo_list_id, todo_item_id=None):
             items = ToDoItem.objects.all().order_by('-id').filter(todo_list__id = todo_list_id)
             context = {
                 'items' : items,
-                'todolist_id': todo_list_id
+                'todo_list_id': todo_list_id
             }
             return render(request, "ToDoList/todo-items.html" , context)
         else:
@@ -72,7 +72,7 @@ def todo_item(request, todo_list_id, todo_item_id=None):
         context = {
             'form': form,
             'items': items,
-            'todolist_id': todo_list_id,
+            'todo_list_id': todo_list_id,
             'list_edit_item': list_edit_item
         } 
         return render(request, "ToDoList/todo-items.html", context)

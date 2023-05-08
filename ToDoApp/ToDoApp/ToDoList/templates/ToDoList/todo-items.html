@@ -8,7 +8,11 @@
     <div class="row">
         <div class="col-12">
             <h1>
-                ToDo Item
+                {% if list_edit_item.id  %}
+                Edit Item
+                {% else %}
+                Add Item
+                {% endif %}
             </h1>
             <hr style="border: color #b8bfc2;">
             {% include "ToDoList/include/message.html" %}
@@ -21,12 +25,12 @@
                     <div class="row">
                         <div class="col-12"> 
                             {% if list_edit_item.id  %}
-                            <form action="{% url 'todo-item' todolist_id list_edit_item.id %}" method="post">
+                            <form action="{% url 'todo-item' todo_list_id list_edit_item.id %}" method="post">
                                 {% else %}
-                                <form action="{% url 'todo-item' todolist_id %}" method="post">
+                                <form action="{% url 'todo-item' todo_list_id %}" method="post">
                                     {% endif %}
                                 {% csrf_token %}
-                                <input type="hidden" id="todolist_id" name="todolist_id" value="{{todolist_id}}">
+                                <input type="hidden" id="todo_list_id" name="todo_list_id" value="{{todo_list_id}}">
                                 <input type="hidden" id="id" name="id" value="{{list_edit_item.id}}">
                                 <div class="mb-4">
                                     <label for="" class="form-label">Title</label>
@@ -53,7 +57,11 @@
                                         name="is_completed">
                                     <label class="custom-control-label" for="is_completed">Completed</label>
                                 </div>
+                                {% if list_edit_item.id  %}
+                                <button type="submit" class="btn btn-primary">Update Item</button>
+                                {% else %}
                                 <button type="submit" class="btn btn-primary">Add Item</button>
+                                {% endif %}                                
                             </form>
                         </div>
                     </div>
@@ -61,6 +69,7 @@
             </section>
         </div>
         <div class="col-md-7">
+            <a style="width: auto;float: right;margin-right: 20px;" class="btn btn-primary" aria-current="page" href="{% url 'todo-item'  todo_list_id %}"><i class="fa fa-home"></i> Add New Item</a>
             <section class="py-5">
                 <div class="container">
                     <table class="table table-bordered">
@@ -94,7 +103,7 @@
                                         alt="item.is_completed "></td>
                                 {% endif %}
                                 <td>
-                                    <a href="{% url 'todo-item' todolist_id  item.id %}"> Edit </a> |
+                                    <a href="{% url 'todo-item' todo_list_id  item.id %}"> Edit </a> |
                                     <a href="#" onclick="confirm_delete('{{item.id }}')"> Delete</a>
                                 </td>
                             </tr>
@@ -134,8 +143,8 @@ function getCookie(name) {
         var csrftoken = getCookie('csrftoken');
     function confirm_delete(item_id) {
         var url = "{% url 'delete-item' %}"
-        var redirecturl = "{% url 'todo-item' todolist_id %}"
-        var todolist_id = "{{todolist_id}}"
+        var redirecturl = "{% url 'todo-item' todo_list_id %}"
+        var todo_list_id = "{{todo_list_id}}"
         if (confirm('Are you sure want to delete?')) {
             try {
                 fetch(url, {
