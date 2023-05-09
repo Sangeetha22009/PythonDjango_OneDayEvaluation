@@ -22,11 +22,7 @@ def index(request):
     return render(request, "blogapp/index.html", {'blogs': paged_blogs, 'count': blogs.count()})
 
 
-@login_required(login_url="login")
 def user_login(request):
-    if request.user.is_authenticated:
-        return redirect('/')
-
     if request.method == 'POST':
         form = AuthenticationForm(request, data=request.POST)
         if form.is_valid():
