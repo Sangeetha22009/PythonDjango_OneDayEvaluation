@@ -11,5 +11,6 @@ urlpatterns = [
     path("delete-item/", views.delete_item, name="delete-item"),
     path("todo-item/<int:todo_list_id>/<int:todo_item_id>/", views.todo_item, name="todo-item"),
     path('delete-list/<int:list_id>/', views.delete_list, name="delete-list"),
-    path('edit-list/<int:list_id>/', views.edit_list, name="edit-list")
+    path('edit-list/<int:list_id>/', views.edit_list, name="edit-list"),
+    path('todo-list-grid/', views.grid_content, name='list-grid')
 ]

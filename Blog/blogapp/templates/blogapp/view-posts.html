@@ -49,7 +49,7 @@
           <h4 class="card-title"> <b>{{post.title}} </b>
             <small>by {{post.created_by}}</small>
           </h4>
-          <p class="card-text">{{post.description | truncatechars:200}}</p>
+          <p class="card-text">{{post.content | truncatechars:200}}</p>
           <br />
           <div>
             <a href="{% url 'add-edit-post' blog_id post.id %}" class="btn btn-primary">

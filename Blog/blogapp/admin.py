@@ -15,6 +15,10 @@ class CommentAdmin(admin.ModelAdmin):
 class ShareAdmin(admin.ModelAdmin):
     list_display = ['social_media', 'post', 'created_by','created_at']
 
+# admin.site.site_header = "UMSRA Admin"
+# admin.site.site_title = "UMSRA Admin Portal"
+# admin.site.index_title = "Welcome to UMSRA Researcher Portal"
+
 admin.site.register(Blog, BlogAdmin)
 admin.site.register(BlogPost, BlogPostAdmin)
 admin.site.register(Comment, CommentAdmin)

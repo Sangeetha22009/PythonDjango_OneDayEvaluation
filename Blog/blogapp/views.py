@@ -71,7 +71,6 @@ def create_blog(request):
         else:
             messages.error(request, 'Error occured while creating blog!!')
             return render(request, 'blogapp/create-blog.html')
-    form = BlogForm()
     return render(request, 'blogapp/create-blog.html')
 
 
@@ -88,6 +87,7 @@ def view_posts(request, blog_id):
 
 @login_required(login_url='login')
 def add_edit_post(request, blog_id, post_id=None):
+    render_html = 'blogapp/add-edit-post.html'
     if request.method == 'POST':
         form = BlogPostForm(request.POST, request.FILES)
         if form.is_valid():
@@ -114,7 +114,7 @@ def add_edit_post(request, blog_id, post_id=None):
         else:
             messages.error(
                 request, r'Error occured while creating\updating blog post!!')
-            return render(request, 'blogapp/add-edit-post.html', {'blog_id': blog_id})
+            return render(request, render_html, {'blog_id': blog_id})
     else:
         if post_id is not None:
             post = BlogPost.objects.get(id=post_id)
@@ -127,9 +127,9 @@ def add_edit_post(request, blog_id, post_id=None):
                 'is_edit': True,
                 'blog_id': blog_id
             }
-            return render(request, 'blogapp/add-edit-post.html', context)
+            return render(request, render_html , context)
         else:
-            return render(request, 'blogapp/add-edit-post.html', {'blog_id': blog_id})
+            return render(request, render_html, {'blog_id': blog_id})
 
 
 @login_required(login_url='login')

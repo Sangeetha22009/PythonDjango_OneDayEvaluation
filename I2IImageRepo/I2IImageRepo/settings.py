@@ -79,7 +79,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'ImageHub',
         'USER': 'postgres',
-        'PASSWORD': 'sanram',
+        'PASSWORD': 'admin',
         'HOST': '127.0.0.1',
         'PORT': '5432'
     }
@@ -121,7 +121,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
-# STATIC_ROOT = BASE_DIR / STATIC_URL
 STATICFILES_DIRS = [
     BASE_DIR / 'static'
 ]

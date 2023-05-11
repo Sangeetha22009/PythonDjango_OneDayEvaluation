@@ -72,7 +72,8 @@
             <a style="width: auto;float: right;margin-right: 20px;" class="btn btn-primary" aria-current="page" href="{% url 'todo-item'  todo_list_id %}"><i class="fa fa-home"></i> Add New Item</a>
             <section class="py-5">
                 <div class="container">
-                    <table class="table table-bordered">
+                    <table class="table table-bordered" aria-label="todo_items">
+                        <caption> ToDo Items </caption>
                         <thead class="thead-dark">
                             <tr>
                                 <th scope="col">#</th>
@@ -129,8 +130,8 @@ function getCookie(name) {
     let cookieValue = null;
     if (document.cookie && document.cookie !== '') {
         const cookies = document.cookie.split(';');
-        for (let i = 0; i < cookies.length; i++) {
-            const cookie = cookies[i].trim();
+        for(var item in cookies){
+            const cookie = item.trim();
             // Does this cookie string begin with the name we want?
             if (cookie.substring(0, name.length + 1) === (name + '=')) {
                 cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
@@ -144,7 +145,6 @@ function getCookie(name) {
     function confirm_delete(item_id) {
         var url = "{% url 'delete-item' %}"
         var redirecturl = "{% url 'todo-item' todo_list_id %}"
-        var todo_list_id = "{{todo_list_id}}"
         if (confirm('Are you sure want to delete?')) {
             try {
                 fetch(url, {
@@ -158,9 +158,8 @@ function getCookie(name) {
                     })
                 }).then((response) => response.json())
                 .then((data) => {
-                    debugger;
                     if(data.is_deleted == true) {
-                        alert('deleted todo item successfully !')
+                        alert('ToDo item deleted successfully !')
                         window.location.href = redirecturl  
                     }
                     else {

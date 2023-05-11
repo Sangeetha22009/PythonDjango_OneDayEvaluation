@@ -55,10 +55,10 @@
         </div>
     </section> 
 </div>
-<div class="col-md-7">
-    <section class="py-5">
+<div class="col-md-7" id="grid_id" >
+   <section class="py-5">
         <div class="container">
-            <table class="table table-bordered">
+            <table class="table table-bordered" aria-label="todo-list">
                 <thead class="thead-dark">
                   <tr>
                     <th scope="col">#</th>
@@ -88,7 +88,7 @@
                 </tbody>
               </table>
         </div>
-    </section> 
+    </section>  
 </div>
 </div>
 </div>
@@ -102,6 +102,25 @@
             window.location.href = "/delete-list/"+ list_id;
         }
     }
+    
+    var load_grid = function(){
+        $.ajax({
+            method: 'get',
+            url:'/todo-list-grid',
+            dataType: 'json',
+            success: function(data){
+                alert('Success');
+                if(data && data.responseText)
+                    $('#grid_id').html(data.responseText)
+            },
+            error: function(error){
+                    $('#grid_id').html(error.responseText)
+                    console.log(error)
+            }
+        })
+    }
+
+    {% comment %} load_grid(); {% endcomment %}
 
 </script>
 
