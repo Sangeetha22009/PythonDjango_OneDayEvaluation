@@ -2,11 +2,24 @@ from django.db import models
 from django.contrib.auth.models import User
 import datetime
 import os
+# from django.core.exceptions import ValidationError
 
 def get_file_name(path, filename=''): 
     date_time_now = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
     filename = f'{date_time_now}_{filename}'
     return os.path.join(path + filename)
+
+# def validate_file(value):
+    # allowed_extensions = [
+    # '.JPEG/JPG', '.JFIF', '.PNG', '.GIF', '.BMP', '.TIFF/TIF', '.WebP',
+    # '.SVG', '.ICO', '.PSD', '.AI', '.EPS', '.PDF', '.TGA', '.RAW', '.EXR',
+    # '.PBM/PGM/PPM', '.HDR', '.ICNS', '.WMF', '.EMF', '.XCF', ]
+    # allowed_extensions=['.jpg', '.jpeg', '.png','.bmp', '.webp', '.svg', '.jfif', '.tif/tiff']
+    # ext = os.path.splitext(value.name)[-1].lower()
+    # print(ext)
+    # if ext not in allowed_extensions:
+    #     raise ValidationError('Only image (like JPG, JPEG, PNG and etc) files are allowed.')
+
 
 # Create your models here.
 class Blog(models.Model):

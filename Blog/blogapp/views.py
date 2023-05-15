@@ -8,6 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.core.paginator import Paginator
 from django.urls import reverse
+from django.core.exceptions import ValidationError
 
 # Create your views here.
 
@@ -59,17 +60,21 @@ def register(request):
 def create_blog(request):
     if request.method == 'POST':
         form = BlogForm(request.POST, request.FILES)
-        if form.is_valid():
-            title = form.cleaned_data['title']
-            description = form.cleaned_data['description']
-            image = form.cleaned_data['cover_image']
-            blog = Blog(
-                title=title, description=description, cover_image=image, created_by=request.user)
-            blog.save()
-            messages.success(request, 'Blog created successfully!!')
-            return redirect('/')
-        else:
-            messages.error(request, 'Error occured while creating blog!!')
+        try:
+            if form.is_valid():
+                title = form.cleaned_data['title']
+                description = form.cleaned_data['description']
+                image = form.cleaned_data['cover_image']
+                blog = Blog(
+                    title=title, description=description, cover_image=image, created_by=request.user)
+                blog.save()
+                messages.success(request, 'Blog created successfully!!', extra_tags='message-success')
+                return redirect('/')
+            else:
+                messages.error(request, 'please find the below validation errors', extra_tags='message-error')
+                return render(request, 'blogapp/create-blog.html', {'form': form})
+        except Exception as ex:
+            messages.error(request, 'Error occured while creating blog!!', extra_tags='message-error')
             return render(request, 'blogapp/create-blog.html')
     return render(request, 'blogapp/create-blog.html')
 
