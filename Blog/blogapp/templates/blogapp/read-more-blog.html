@@ -15,26 +15,33 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-lg-5 my-4">
-        <div class="card shadow" style="width: 20rem; max-height: 30rem;">
-            <img src="/media/{{blog.cover_image}}" class="card-img-top" alt="..." height="250px">
-            <div class="card-body">
-                <h4 class="card-title"> <b>{{blog.title}} </b>
-                    <small>by {{blog.created_by}}</small>
-                </h4>                
+        <div class="col-lg-3 my-4">
+            <div class="card shadow" style="width: 20rem; max-height: 30rem;">
+                <img src="/media/{{blog.cover_image}}" class="card-img-top" alt="..." height="250px">
+                <div class="card-body">
+                    <h4 class="card-title"> <b>{{blog.title}} </b>
+                        <small>by {{blog.created_by}}</small>
+                    </h4>                
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 my-4">
+            <div class="card shadow" style="width: 20rem; max-height: 30rem;">
+                <h5> Thumbnail : </h5>
+                <img src="data:image/jpeg; base64, {{ blog.thumbnail_image | urlencode }}" alt="Thumbnail">      
+            </div>
+        </div>
+        <div class="col-lg-6 my-4">    
+            <div class="card">
+                <div class="card-header">
+                    Content
+                </div>
+                <div class="card-body">
+                    <h5 class="card-text">{{blog.description}}</h5>
+                </div>
             </div>
         </div>
     </div>
-    <div class="col-lg-6 my-4">    
-    <div class="card">
-        <div class="card-header">
-            Content
-        </div>
-        <div class="card-body">
-              <h5 class="card-text">{{blog.description}}</h5>
-        </div>
-    </div>
-</div>
   <br>
 </div>
 

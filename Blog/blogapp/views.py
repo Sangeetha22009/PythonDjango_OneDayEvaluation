@@ -1,17 +1,23 @@
+import base64
+from sqlite3 import Blob
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth import login, logout
 from django.contrib.auth.forms import AuthenticationForm
-from .forms import UserRegistrationForm, BlogForm, BlogPostForm
-from .models import Blog, BlogPost, Comment,  Share
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.core.paginator import Paginator
 from django.urls import reverse
-from django.core.exceptions import ValidationError
+
+#external libraries
+from django.core.files.uploadedfile import InMemoryUploadedFile
+from io import BytesIO
+
+#application libraries
+from .forms import UserRegistrationForm, BlogForm, BlogPostForm
+from .models import Blog, BlogPost, Comment,  Share
 
 # Create your views here.
-
 @login_required(login_url="login")
 def index(request):
     search_keyword = request.GET.get('keyword', '')
@@ -21,7 +27,6 @@ def index(request):
     current_page = request.GET.get('page') or 1
     paged_blogs = paginator.get_page(current_page)
     return render(request, "blogapp/index.html", {'blogs': paged_blogs, 'count': blogs.count()})
-
 
 def user_login(request):
     if request.method == 'POST':
@@ -37,13 +42,11 @@ def user_login(request):
 
     return render(request, "blogapp/login.html", {'form': form})
 
-
 def user_logout(request):
     if request.user.is_authenticated:
         logout(request)
         messages.success(request, "You have been successfully logged out.")
     return redirect('/')
-
 
 def register(request):
     registration_form = UserRegistrationForm()
@@ -55,7 +58,6 @@ def register(request):
             return redirect('/login')
     return render(request, "blogapp/register.html", {'registraion_form': registration_form})
 
-
 @login_required(login_url='login')
 def create_blog(request):
     if request.method == 'POST':
@@ -65,8 +67,26 @@ def create_blog(request):
                 title = form.cleaned_data['title']
                 description = form.cleaned_data['description']
                 image = form.cleaned_data['cover_image']
-                blog = Blog(
-                    title=title, description=description, cover_image=image, created_by=request.user)
+                thumbnail_image = request.FILES.get('thumbnail_image')
+                if thumbnail_image:
+                    thumbnail_bytes =  thumbnail_image.read()
+                    # thumbnail_bytes = thumbnail_image.read() # read image data 
+                    # file_obj = BytesIO(thumbnail_bytes)
+                    # file_obj.name = thumbnail_image.name
+                    # #create an InMemoryUploadedFile instance
+                    # uploaded_file =  InMemoryUploadedFile(
+                    #     file = file_obj,
+                    #     field_name = 'thumbnail_image', # Field name of the BinaryField
+                    #     name = file_obj.name,
+                    #     content_type = thumbnail_image.content_type,
+                    #     size = thumbnail_image.__sizeof__(),
+                    #     charset = None
+                    # )
+                    blog = Blog(title=title, description=description, cover_image=image, 
+                                created_by=request.user, thumbnail_image = thumbnail_bytes)
+                else:
+                    blog = Blog(title=title, description=description, cover_image=image, 
+                                created_by=request.user)
                 blog.save()
                 messages.success(request, 'Blog created successfully!!', extra_tags='message-success')
                 return redirect('/')
@@ -201,8 +221,10 @@ def read_more_blog(request, blog_id):
     blog = get_object_or_404(Blog, id=blog_id)
     posts = blog.blogpost_set.all()
     BlogPost.objects.all().filter(blog_id = blog_id)
+    image_base64 = base64.b64encode(blog.thumbnail_image).decode('utf-8')
+    blog.thumbnail_image = image_base64
     context = {
         'posts': posts,
-        'blog': blog,
+        'blog': blog,      
     }
     return render(request, 'blogapp/read-more-blog.html', context)

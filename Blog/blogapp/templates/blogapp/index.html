@@ -44,7 +44,7 @@
                 <div class="card-body">
                   <h4 class="card-title"> <b>{{blog.title}} </b>
                     <small>by {{blog.created_by}}</small>
-                  </h4>
+                  </h4>                  
                   <p class="card-text">{{blog.description | truncatechars:200}}</p>
                   <br/>
                   <a href="{% url 'view-posts' blog.id %}" class="btn btn-primary"> 
